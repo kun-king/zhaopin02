@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.UserFavoritesMapper">
+
+    <resultMap id="UserFavoritesMapper" type="com.zhaopin.bean.UserFavorites">
+        <id property="favoritesId" column="favorites_id" javaType="java.lang.Long" />
+        <result property="title" column="title" />
+        <result property="salaryUp" column="salary_up" />
+        <result property="salaryDown" column="salary_down" />
+        <result property="workCity" column="work_city" />
+        <result property="userId" column="user_id" />
+        <result property="positionId" column="position_id"/>
+    </resultMap>
+
+    <select id="selectUserFavorites" resultMap="UserFavoritesMapper" resultType="com.zhaopin.bean.UserFavorites">
+        select * from user_favorites where user_id = #{userId}
+    </select>
+
+    <delete id="deleteUserFavorites" parameterType="com.zhaopin.bean.UserFavorites">
+        delete from user_favorites where favorites_id = #{favoritesId}
+    </delete>
+
+    <delete id="deleteUserFavoritesAll" parameterType="com.zhaopin.bean.UserFavorites">
+        delete from user_favorites where user_id = #{userId}
+    </delete>
+
+    <insert id="insertUserFavorites" parameterType="com.zhaopin.bean.UserFavorites">
+        insert  into user_favorites(title,salary_up,salary_down,work_city,user_id,position_id)
+        value (#{title},#{salaryUp},#{salaryDown},#{workCity},#{userId},#{positionId})
+    </insert>
+
+    <update id="updateUserFavorites" parameterType="com.zhaopin.bean.UserFavorites">
+        update user_favorites set title=#{title},salary_up=#{salaryUp},salary_down=#{salaryDown},work_city=#{workCity}
+        where favorites_id = #{favoritesId}
+    </update>
+
+</mapper>

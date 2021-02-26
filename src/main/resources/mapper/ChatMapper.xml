@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.ChatMapper">
+
+    <resultMap id="ChatMapper" type="com.zhaopin.bean.Chat">
+        <id property="chatId" column="chat_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+        <result property="userId" column="user_id" />
+        <result property="hrId" column="hr_id" />
+    </resultMap>
+
+    <select id="selectChat" parameterType="com.zhaopin.bean.Chat" resultMap="ChatMapper">
+        select * from chat
+        <where>
+            <if test="userId !=null and userId !=' '">
+                and user_id=#{userId}
+            </if>
+            <if test="hrId !=null and hrId !=' '">
+                and hr_id=#{hrId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertChat" parameterType="com.zhaopin.bean.Chat">
+        insert into chat(user_id,hr_id)
+        values(#{userId},#{hrId})
+    </insert>
+
+    <delete id="deleteChat" parameterType="com.zhaopin.bean.Chat">
+        delete from chat where chat_id=#{chatId}
+    </delete>
+
+    <update id="updateChat" parameterType="com.zhaopin.bean.Chat">
+        update chat set user_id=#{userId},hr_id=#{hrId}
+        where chat_id=#{chatId}
+    </update>
+
+</mapper>

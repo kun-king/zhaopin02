@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.ChatDetailsMapper">
+
+    <resultMap id="ChatDetailsMapper" type="com.zhaopin.bean.ChatDetails">
+        <id property="chatDetailsId" column="chat_details_id" javaType="java.lang.Long"/>
+        <result property="chatId" column="chat_id" />
+        <result property="userId" column="user_id" />
+        <result property="content" column="content" />
+        <result property="times" column="times" />
+        <result property="type" column="type" />
+        <result property="isLatest" column="is_latest" />
+    </resultMap>
+
+    <select id="selectChatDetails" parameterType="com.zhaopin.bean.ChatDetails" resultMap="ChatDetailsMapper">
+        select * from chat_details
+        <where>
+            <if test="chatId !=null">
+                and chat_id=#{chatId}
+            </if>
+            <if test="user_id !=null and user_id !=' '">
+                and user_id=#{userId}
+            </if>
+            <if test="times !=null">
+                and times=#{times}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertChatDetails" parameterType="com.zhaopin.bean.ChatDetails">
+        insert into chat_details(chat_id,user_id,content,times,type,is_latest)
+        values(#{chatId},#{userId},#{content},#{times,jdbcType=TIMESTAMP},#{type},#{isLatest})
+    </insert>
+
+    <delete id="deleteChatDetails" parameterType="com.zhaopin.bean.ChatDetails">
+        delete from chat_details where chat_id=#{chatId} or content=#{content}
+    </delete>
+
+    <update id="updateChatDetails" parameterType="com.zhaopin.bean.ChatDetails">
+        update chat_details set content=#{content},times=#{times,jdbcType=TIMESTAMP},type=#{type},is_latest=#{isLatest}
+        where chat_details_id=#{chatDetailsId}
+    </update>
+
+</mapper>

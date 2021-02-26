@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.ChatListMapper">
+
+    <resultMap id="ChatListMapper" type="com.zhaopin.bean.ChatList">
+        <id property="chatListId" column="chat_list_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="chatId" column="chat_id" />
+        <result property="hrId" column="hr_id" />
+        <result property="userId" column="user_id" />
+        <result property="isOnline" column="is_on_line" />
+        <result property="unread" column="unread" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <select id="selectChatList" parameterType="com.zhaopin.bean.ChatList" resultMap="ChatListMapper">
+        select * from chat_list
+        <where>
+            <if test="chatId !=null">
+                and chat_id=#{chatId}
+            </if>
+            <if test="hrId !=null and hrId !=' '">
+                and hr_id=#{hrId}
+            </if>
+            <if test="userId !=null and userId !=' '">
+                and user_id=#{userId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertChatList" parameterType="com.zhaopin.bean.ChatList">
+        insert into chat_list(chat_id,hr_id,user_id,is_online,unread,status)
+        values(#{chatId},#{hrId},#{userId},#{isOnline},#{unread},#{status})
+    </insert>
+
+    <delete id="deleteChatList" parameterType="com.zhaopin.bean.ChatList">
+        delete from chat_list where chat_list_id=#{chatListId}
+    </delete>
+
+    <update id="updateChatList" parameterType="com.zhaopin.bean.ChatList">
+        update chat_list set is_online=#{isOnline},unread=#{unread},status=#{status},
+        where chat_list_id=#{chatListId}
+    </update>
+
+</mapper>

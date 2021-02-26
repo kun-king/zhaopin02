@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhaopin.mapper.AdminMapper">
+
+    <resultMap id="AdminMap" type="com.zhaopin.bean.Admin" >
+        <id property="adminId" column="admin_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="idName" column="id_name" />
+        <result property="adminName" column="admin_name" />
+        <result property="pwd" column="pwd" />
+        <result property="mobil" column="mobil" />
+    </resultMap>
+
+    <!-- 管理员登录-->
+<!--    <select id="login" resultMap="AdminMapper">-->
+<!--        select * from admin where id_name = #{idName} and pwd = #{pwd}-->
+<!--    </select>-->
+
+    <!--注册-->
+    <insert id="insetAdmin" parameterType="com.zhaopin.bean.Admin">
+        insert into admin(id_name,admin_name,pwd,mobil)
+        values(#{idName},#{adminName},#{pwd},#{mobil})
+    </insert>
+
+    <!--删除-->
+    <delete id="deleteAdmin" parameterType="com.zhaopin.bean.Admin">
+        delete from admin where id_name = #{idName} and pwd = #{pwd}
+    </delete>
+
+    <!--更新-->
+    <update id="updateAdmin" parameterType="com.zhaopin.bean.Admin">
+        update admin set name=#{name},pwd=#{pwd},mobil=#{mobil},
+        where admin_id=#{adminId}
+    </update>
+
+</mapper>

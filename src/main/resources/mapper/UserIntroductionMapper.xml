@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.UserIntroductionMapper">
+
+    <resultMap id="UserIntroductionMapper" type="com.zhaopin.bean.UserIntroduction">
+        <id property="introductionId" column="introduction_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result property="ability" column="ability" />
+        <result property="internship" column="internship" />
+        <result property="workExperience" column="work_experience" />
+        <result property="certificate" column="certificate" />
+        <result property="jobDesire" column="job_desire" />
+        <result property="userId" column="user_id" />
+    </resultMap>
+
+    <select id="selectUserIntroduction" parameterType="com.zhaopin.bean.UserIntroduction" resultMap="UserIntroductionMapper">
+        select * from user_introduction
+        where user_id =#{userId}
+    </select>
+
+    <update id="updateUserIntroduction" parameterType="com.zhaopin.bean.UserIntroduction">
+        update user_introduction
+        set ability= #{ability},internship=#{internship},work_experience=#{workExperience},
+        certificate=#{certificate},job_desire=#{jobDesire}
+        WHERE user_id =#{userId}
+    </update>
+
+    <delete id="deleteUserIntroduction" parameterType="com.zhaopin.bean.UserIntroduction">
+        delete from user_introduction
+        where user_id = #{userId}
+    </delete>
+
+    <insert id="insertUserIntroduction" parameterType="com.zhaopin.bean.UserIntroduction">
+        insert into user_introduction(introduction_id,user_id)
+        values (#{introductionId},#{userId})
+    </insert>
+
+</mapper>

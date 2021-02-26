@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.HrPositionMapper">
+
+    <resultMap id="HrPositionMapper" type="com.zhaopin.bean.HrPosition">
+        <id property="positionId" column="position_id" javaType="java.lang.Long" />
+        <result property="title" column="title" />
+        <result property="education" column="education" />
+        <result property="experience" column="experience" />
+        <result property="welfare" column="welfare" />
+        <result property="positionDescription" column="position_description" />
+        <result property="quantity" column="quantity" />
+        <result property="workCity" column="work_city" />
+        <result property="workAddress" column="work_address" />
+        <result property="workTime" column="work_time"/>
+        <result property="salaryUp" column="salary_up" />
+        <result property="salaryDown" column="salary_down" />
+        <result property="salaryAverage" column="salary_average" />
+        <result property="releaseDate" column="release_date" />
+        <result property="validDate" column="valid_date" />
+        <result property="Label" column="Label" />
+        <result property="Keyword" column="Keyword" />
+        <result property="positionType" column="position_type" />
+        <result property="companyId" column="company_id" />
+        <result property="companyName" column="company_name" />
+        <result property="companyDescription" column="company_description" />
+        <result property="hrId" column="hr_id" />
+        <result property="hrMobile" column="hr_mobile" />
+        <result property="hrEmail" column="hr_email" />
+        <result property="categoryId" column="category_id" />
+        <result property="companyType" column="company_type" />
+    </resultMap>
+
+    <select id="selectHrPosition" parameterType="com.zhaopin.bean.HrPosition" resultMap="HrPositionMapper">
+        select * from hr_position
+        <where>
+            <if test="hrId !=null and hrId !=''">
+                and hr_id = #{hrId}
+            </if>
+            <if test="categoryId != 0">
+                and category_id =#{categoryId}
+            </if>
+            <if test="positionId != 0">
+                and position_id = #{positionId}
+            </if>
+            <if test="title != null and title !=''">
+                and title like concat ('%',#{title},'%')
+            </if>
+            <if test="companyName != null and companyName !='' ">
+                and company_name like concat ('%', #{companyName}, '%')
+            </if>
+            <if test="workCity != null and workCity !=''">
+                and work_city like concat ('%', #{workCity}, '%')
+            </if>
+            <if test="companyId != 0">
+                and company_id = #{companyId}
+            </if>
+        </where>
+    </select>
+
+
+
+    <select id="newdatHrPosition" parameterType="com.zhaopin.bean.HrPosition" resultMap="HrPositionMapper">
+        select * from hr_position
+        <where>
+            <if test="title != null and title !=''">
+                and title like concat ('%',#{title},'%')
+            </if>
+            <if test="companyName != null and companyName !=''">
+                and company_name like concat ('%', #{companyName}, '%')
+            </if>
+            <if test="workCity != null and workCity !=''">
+                and work_city like concat ('%', #{workCity}, '%')
+            </if>
+        </where>
+        order by release_date desc
+    </select>
+
+    <select id="valuableHrPosition" parameterType="com.zhaopin.bean.HrPosition" resultMap="HrPositionMapper">
+        select * from hr_position
+        <where>
+            <if test="title != null and title !=''">
+                and title like concat ('%',#{title},'%')
+            </if>
+            <if test="companyName != null and companyName !=''">
+                and company_name like concat ('%', #{companyName}, '%')
+            </if>
+            <if test="workCity != null and workCity !=''">
+                and work_city like concat ('%', #{workCity}, '%')
+            </if>
+        </where>
+        order by salary_average desc
+    </select>
+
+    <select id="selectkey" parameterType="com.zhaopin.bean.HrPosition" resultMap="HrPositionMapper" >
+        select * from hr_position
+        where Keyword like concat ('%', #{Keyword}, '%')
+    </select>
+
+    <delete id="deleteHrPosition" parameterType="com.zhaopin.bean.HrPosition">
+        delete from hr_position where position_Id=#{positionId}
+    </delete>
+
+    <delete id="deleteHrPositionValid" parameterType="com.zhaopin.bean.HrPosition">
+        delete from hr_position where valid_date=#{validDate}
+    </delete>
+
+    <update id="updateHrPosition" parameterType="com.zhaopin.bean.HrPosition">
+        update hr_position set title = #{title},education=#{education},experience=#{experience},
+        welfare=#{welfare},position_description=#{positionDescription},quantity=#{quantity},
+        work_city=#{workCity},work_address=#{workAddress},work_time=#{workTime},salary_up=#{salaryUp},
+        salary_down=#{salaryDown},salary_average=#{salaryAverage},release_date=#{releaseDate},
+        valid_date=#{validDate},Label=#{Label},Keyword=#{Keyword},position_type=#{positionType}
+        WHERE position_id = #{positionId} and hr_id = #{hrId}
+    </update>
+
+    <insert id="insertHrPosition" parameterType="com.zhaopin.bean.HrPosition">
+        insert into hr_position(title,education,experience,welfare,position_description,quantity,work_city,work_address,
+        work_time,salary_up,salary_down,salary_average,release_date,valid_date,Label,Keyword,position_type,company_id,company_name,
+        company_type,company_description,hr_id,hr_mobile,hr_email,category_id)
+        values(#{title},#{education},#{experience},#{welfare},#{positionDescription},#{quantity},#{workCity},#{workAddress},
+        #{workTime},#{salaryUp},#{salaryDown},#{salaryAverage},#{releaseDate},#{validDate},#{Label},#{Keyword},#{positionType},
+        #{companyId},#{companyName},#{companyType},#{companyDescription},#{hrId},#{hrMobile},#{hrEmail},#{categoryId})
+    </insert>
+
+</mapper>

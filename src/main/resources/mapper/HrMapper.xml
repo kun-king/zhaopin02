@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.HrMapper">
+
+    <resultMap id="HrMapper" type="com.zhaopin.bean.Hr">
+        <id property="hrId" column="hr_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result property="mobile" column="mobile" />
+        <result property="password" column="password" />
+        <result property="hrName" column="hr_name" />
+        <result property="email" column="email" />
+        <result property="description" column="description" />
+        <result property="companyId" column="company_id" />
+    </resultMap>
+
+    <select id="login" parameterType="com.zhaopin.bean.Hr" resultMap="HrMapper">
+        select * from hr where hr_id = #{hrId}
+    </select>
+
+    <delete id="logoutHr" parameterType="com.zhaopin.bean.Hr">
+        delete from hr where mobile=#{mobile} and password={password}
+    </delete>
+
+    <select id="selectHr" parameterType="com.zhaopin.bean.Hr" resultMap="HrMapper">
+        select hr_id,mobile,hr_name,email,description,company_id
+        from hr
+        <where>
+            <if test="hrId != null and hrId != ''">
+                and hr_id = #{hrId}
+            </if>
+            <if test="mobile !=null and mobile !=''">
+                and mobile = #{mobile}
+            </if>
+            <if test="hrName !=null and hrName !=''">
+                and hr_name like concat('%', #{hrName}, '%')
+            </if>
+            <if test="description !=null and description !=''">
+                and description = #{description}
+            </if>
+            <if test="companyId != 0">
+                and company_id = #{companyId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteHr" parameterType="com.zhaopin.bean.Hr">
+        delete from hr where mobile=#{mobile}
+    </delete>
+
+    <update id="updateHr" parameterType="com.zhaopin.bean.Hr">
+        update hr set password=#{password},hr_name = #{hrName},email=#{email},description=#{description}
+        WHERE mobile = #{mobile}
+    </update>
+
+    <insert id="insertHr" parameterType="com.zhaopin.bean.Hr">
+        insert into hr(hr_id,mobile,password,company_id,hr_name)
+        values (#{hrId},#{mobile},#{password},#{companyId},#{hrName})
+    </insert>
+
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.CommentMapper">
+
+    <resultMap id="CommentMapper" type="com.zhaopin.bean.Comment">
+        <id property="commentId" column="comment_id" javaType="java.lang.Long" />
+        <result property="reviewdetail" column="reviewdetail"/>
+        <result property="nickname" column="nickname"/>
+        <result property="userId" column="userId"/>
+        <result property="hrId" column="hr_id"/>
+        <result property="positionId" column="position_id"/>
+        <result property="companyId" column="company_id"/>
+    </resultMap>
+
+    <select id="selectComment" resultMap="CommentMapper" resultType="com.zhaopin.bean.Comment">
+        select * from comment
+        <where>
+            <if test="commentId != 0">
+                and comment_id = #{commentId}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="positionId != 0">
+                and position_id = #{positionId}
+            </if>
+            <if test="companyId != 0">
+                and company_id = #{companyId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insetComment" parameterType="com.zhaopin.bean.Comment" >
+        insert into comment(reviewdetail,nickname,user_id,hr_id,position_id,company_id)
+        value (#{reviewdetail},#{nickname},#{userId},#{hrId},#{positionId},#{companyId})
+    </insert>
+
+    <delete id="deleteComment" parameterType="com.zhaopin.bean.Comment">
+        delete from comment where comment_id = #{commentId} and user_id = #{userId}
+    </delete>
+
+</mapper>

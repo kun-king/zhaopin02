@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.CompanyMapper">
+
+    <resultMap id="CompanyMapper" type="com.zhaopin.bean.Company">
+        <id property="companyId" column="company_id" javaType="java.lang.Long"/>
+        <result property="companyName" column="company_name" />
+        <result property="companyAbbreviation" column="company_abbreviation" />
+        <result property="companyFullname" column="company_fullname" />
+        <result property="type" column="type" />
+        <result property="description" column="description" />
+    </resultMap>
+
+    <select id="selectCompany" parameterType="com.zhaopin.bean.Company" resultMap="CompanyMapper">
+        select * from company
+        <where>
+            <if test="companyId != 0 ">
+                and company_id = #{companyId}
+            </if>
+            <if test="companyName !=null and companyName !=''">
+                and company_name like concat('%', #{companyName}, '%')
+            </if>
+            <if test="companyFullname !=null and companyName !=''">
+                and company_fullname like concat('%', #{companyFullname}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCompanyName" parameterType="com.zhaopin.bean.Company" resultMap="CompanyMapper">
+        select * from company where company_name = #{companyName}
+    </select>
+
+    <!--<select id="selectCompanyIdName" parameterType="java.lang.Long" resultMap="CompanyMapper">
+        select company_id from company where company_name = #{companyName}
+    </select>-->
+
+    <insert id="insertCompany" parameterType="com.zhaopin.bean.Company">
+        insert into company(company_name,company_abbreviation,company_fullname,type,description)
+        values(#{companyName},#{companyAbbreviation},#{companyFullname},#{type},#{description})
+    </insert>
+
+    <delete id="deleteCompany" parameterType="com.zhaopin.bean.Company">
+        delete from company where company_id=#{companyId}
+    </delete>
+
+    <update id="updateCompany" parameterType="com.zhaopin.bean.Company">
+        update company
+        set company_name=#{companyName},company_abbreviation=#{companyAbbreviation},
+        company_fullname=#{companyFullname},type=#{type},description=#{description}
+        where company_id=#{companyId}
+    </update>
+
+</mapper>

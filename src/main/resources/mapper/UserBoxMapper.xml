@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhaopin.mapper.UserBoxMapper">
+
+    <resultMap id="UserBoxMapper" type="com.zhaopin.bean.UserBox">
+        <id property="boxId" column="box_id" javaType="java.lang.Long" />
+        <result property="title" column="title" />
+        <result property="salaryUp" column="salary_up" />
+        <result property="salaryDown" column="salary_down" />
+        <result property="workCity" column="work_city" />
+        <result property="userMobile" column="user_mobile" />
+        <result property="hrMobile" column="hr_mobile" />
+        <result property="hrEmail" column="hr_email" />
+        <result property="userEmail" column="user_email" />
+        <result property="hrId" column="hr_id" />
+        <result property="userId" column="user_id" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <select id="selectUserBox" resultType="com.zhaopin.bean.UserBox" resultMap="UserBoxMapper">
+        select * from user_box
+        <where>
+            <if test="userId != null and userId != ''">
+                user_id = #{userId}
+            </if>
+            <if test="hrId != null and hrId != ''">
+                hr_id = #{hrId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteUserBox" parameterType="com.zhaopin.bean.UserBox">
+        delete from user_box where box_id = #{boxId}
+    </delete>
+
+    <delete id="deleteUserBoxAll" parameterType="com.zhaopin.bean.UserBox">
+        delete from user_box where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteHrBoxAll" parameterType="com.zhaopin.bean.UserBox">
+        delete from user_box where hr_id = #{hrId}
+    </delete>
+
+    <insert id="insertUserBox" parameterType="com.zhaopin.bean.UserBox">
+        insert into user_box(title, salary_up, salary_down,work_city,hr_mobile,user_mobile,hr_email,user_email,hr_id, user_id, status)
+        value (#{title},#{salaryUp},#{salaryDown},#{workCity},#{hrMobile},#{userMobile},#{hrEmail},#{userEmail},#{hrId},#{userId},#{status})
+    </insert>
+
+    <update id="updateUserBox" parameterType="com.zhaopin.bean.UserBox">
+        update user_box set status=#{status}
+        where box_id=#{boxId}
+    </update>
+
+</mapper>
